@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Comtar - Não encontrado{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h1>Tarefa não encontrada</h1>
+    <p>O recurso não existe ou você não tem permissão para acessá-lo.</p>
+    <a class="btn" href="{{ url_for('index') }}">Voltar</a>
+</section>
+{% endblock %}

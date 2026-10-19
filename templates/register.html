@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Comtar - Cadastro{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h1>Cadastro</h1>
+    <form method="post">
+        <label>Nome <input type="text" name="name" maxlength="64" value="{{ request.form.get('name', '') }}" required></label>
+        <label>E-mail <input type="email" name="email" value="{{ request.form.get('email', '') }}" required></label>
+        <label>Senha (mín. 6 caracteres) <input type="password" name="password" minlength="6" required></label>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <p>Já tem conta? <a href="{{ url_for('login') }}">Entrar</a></p>
+</section>
+{% endblock %}

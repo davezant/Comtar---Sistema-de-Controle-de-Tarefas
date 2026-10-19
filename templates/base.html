@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Comtar{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <a class="logo" href="{{ url_for('index') }}">Comtar</a>
+        {% if g.user %}
+        <nav>
+            <span>Olá, {{ g.user['name'] }}</span>
+            <form method="post" action="{{ url_for('logout') }}">
+                <button class="link">Sair</button>
+            </form>
+        </nav>
+        {% endif %}
+    </header>
+    <main>
+        {% for categoria, msg in get_flashed_messages(with_categories=true) %}
+        <p class="flash {{ categoria }}">{{ msg }}</p>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

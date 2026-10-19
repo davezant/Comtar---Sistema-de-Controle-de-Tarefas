@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Comtar - {{ 'Editar' if tarefa else 'Nova' }} tarefa{% endblock %}
+{% block content %}
+{% set titulo = form.get('title', tarefa['title'] if tarefa else '') %}
+{% set descricao = form.get('description', tarefa['description'] if tarefa else '') %}
+{% set prazo = form.get('deadline', tarefa['deadline_date'] if tarefa else '') %}
+{% set status_atual = form.get('status', tarefa['status'] if tarefa else '') %}
+<section class="card narrow">
+    <h1>{{ 'Editar tarefa' if tarefa else 'Nova tarefa' }}</h1>
+    <form method="post">
+        <label>Título <input type="text" name="title" maxlength="64" value="{{ titulo }}"></label>
+        <label>Descrição <textarea name="description" maxlength="256" rows="4">{{ descricao }}</textarea></label>
+        <label>Prazo <input type="date" name="deadline" value="{{ prazo }}" required></label>
+        {% if tarefa %}
+        <label>Status
+            <select name="status">
+                {% for s in STATUS_VALIDOS %}
+                <option value="{{ s }}" {% if s == status_atual %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        {% endif %}
+        <div class="botoes">
+            <button type="submit">Salvar</button>
+            <a class="btn sec" href="{{ url_for('tarefas') }}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Comtar - Minhas tarefas{% endblock %}
+{% block content %}
+<section class="card">
+    <div class="topo">
+        <h1>Minhas tarefas</h1>
+        <a class="btn" href="{{ url_for('nova_tarefa') }}">+ Nova tarefa</a>
+    </div>
+
+    <form method="get" class="filtro">
+        <label>Filtrar por status
+            <select name="status" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                {% for s in STATUS_VALIDOS %}
+                <option value="{{ s }}" {% if s == filtro %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <noscript><button type="submit">Filtrar</button></noscript>
+    </form>
+
+    {% if tarefas %}
+    <table>
+        <thead>
+            <tr><th>Título</th><th>Descrição</th><th>Criada em</th><th>Prazo</th><th>Status</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+        {% for t in tarefas %}
+            <tr {% if t['status'] != 'CONCLUIDA' and t['deadline_date'] < hoje %}class="atrasada"{% endif %}>
+                <td>{{ t['title'] }}</td>
+                <td>{{ t['description'] }}</td>
+                <td>{{ t['creation_date'] }}</td>
+                <td>{{ t['deadline_date'] }}</td>
+                <td><span class="tag {{ t['status'] }}">{{ t['status'] }}</span></td>
+                <td class="acoes">
+                    {% if t['status'] != 'CONCLUIDA' %}
+                    <form method="post" action="{{ url_for('concluir_tarefa', task_id=t['id']) }}">
+                        <button>Concluir</button>
+                    </form>
+                    {% endif %}
+                    <a class="btn sec" href="{{ url_for('editar_tarefa', task_id=t['id']) }}">Editar</a>
+                    <form method="post" action="{{ url_for('excluir_tarefa', task_id=t['id']) }}"
+                          onsubmit="return confirm('Excluir esta tarefa?')">
+                        <button class="perigo">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="vazio">Nenhuma tarefa encontrada.</p>
+    {% endif %}
+</section>
+{% endblock %}
